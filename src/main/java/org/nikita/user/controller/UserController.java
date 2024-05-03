@@ -1,5 +1,6 @@
 package org.nikita.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nikita.user.dto.UserDto;
@@ -30,7 +31,7 @@ public class UserController {
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUserById(@RequestBody UserDto userDto, @ModelAttribute User user) {
+    public UserDto updateUserById(@RequestBody @Valid UserDto userDto, @ModelAttribute User user) {
         log.info("CONTROLLER: Updated user:{} by id:{}, new value of user:{}", user, user.getId(), userDto);
         return mapper.userToUserDto(service.updateUserById(user.getId(), userDto));
     }

@@ -29,7 +29,7 @@ class UserControllerIntegrationTest {
     @Test
     void updateUserByIdTest() throws Exception {
         String content = "{\"firstName\": \"testUser\", \"email\": \"test@gmail.com\", " +
-                "\"lastName\" : \"surname\"}";
+                "\"lastName\" : \"surname\", \"birthday\" : \"2002-02-02\"}";
 
         mockMvc.perform(patch("/v1/users/%d".formatted(1))
                         .contentType(MediaType.APPLICATION_JSON)

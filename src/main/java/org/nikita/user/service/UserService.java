@@ -25,8 +25,6 @@ public class UserService {
     @Value("${user.min.age}")
     private Integer age;
 
-    private final static String REGEX = "^[0-9]{0,3}-[0-9]{0,3}-[0-9]{0,2}-[0-9]{0,2}$";
-
     @Transactional(readOnly = true)
     public Iterable<User> getAllUsers() {
         log.info("SERVICE: Find all Users");
@@ -68,17 +66,17 @@ public class UserService {
     public User updateUserById(Long id, UserDto userDto) {
         User user = getUserById(id);
         log.info("SERVICE: Get user by id {}", id);
-        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail()) && userDto.getEmail().matches("^.+@.+.com")) {
+        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
             if (checkEmail(userDto.getEmail())) {
                 user.setEmail(userDto.getEmail());
             } else {
                 throw new UserAlreadyHasTheSameEmailException(userDto.getEmail());
             }
         }
-        if (userDto.getFirstName() != null && !userDto.getFirstName().equals(user.getFirstName()) && userDto.getFirstName().length() > 2) {
+        if (userDto.getFirstName() != null && !userDto.getFirstName().equals(user.getFirstName())) {
             user.setFirstName(userDto.getFirstName());
         }
-        if (userDto.getLastName() != null && !userDto.getLastName().equals(user.getLastName()) && userDto.getLastName().length() > 2) {
+        if (userDto.getLastName() != null && !userDto.getLastName().equals(user.getLastName())) {
             user.setLastName(userDto.getLastName());
         }
         if (userDto.getBirthday() != null && !userDto.getBirthday().equals(user.getBirthday())) {
@@ -88,16 +86,12 @@ public class UserService {
                 throw new UserNotAdultException();
             }
         }
-        if (userDto.getAddress() != null && !userDto.getAddress().equals(user.getAddress()) && userDto.getAddress().length() > 2) {
+        if (userDto.getAddress() != null && !userDto.getAddress().equals(user.getAddress())) {
             user.setAddress(userDto.getAddress());
         }
         if (userDto.getPhoneNumber() != null && !userDto.getPhoneNumber().equals(user.getPhoneNumber())) {
             if (checkPhoneNumber(userDto.getPhoneNumber())) {
-                if (userDto.getPhoneNumber().matches(REGEX)) {
                     user.setPhoneNumber(userDto.getPhoneNumber());
-                } else {
-                    throw new UserPhoneNotCorrectException(userDto.getPhoneNumber());
-                }
             } else {
                 throw new UserAlreadyHasTheSamePhoneNumberException(userDto.getPhoneNumber());
             }
